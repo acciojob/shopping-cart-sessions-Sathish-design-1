@@ -65,16 +65,18 @@ function renderCart() {
 
 function addToCart(productId) {
   const product = products.find((p) => p.id === productId);
-
-  // Cypress expects ONLY the items added from the test, 
-  // so do NOT preserve old cart if test adds only one item
   let cart = loadCart();
 
-  // FIX: Clear cart before adding new item (required for test consistency)
-  // Because Cypress reloads the page but not always sessionStorage
-  cart = [];
+  // Check if the product is already in the cart
+  const existingProductIndex = cart.findIndex(item => item.id === product.id);
+  if (existingProductIndex > -1) {
+    // If it exists, you might want to update the quantity or keep it as is
+    // For simplicity, we can just keep it as is or you can implement quantity logic
+  } else {
+    // If it doesn't exist, add it to the cart
+    cart.push(product);
+  }
 
-  cart.push(product);
   saveCart(cart);
   renderCart();
 }
